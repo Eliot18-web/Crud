@@ -1,22 +1,28 @@
 
 package crud.senati;
-import java.sql.*;
+
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
-public class Usuarios extends javax.swing.JFrame {
+
+public class Productos extends javax.swing.JFrame {
 
     
-    public Usuarios() {
+    public Productos() {
         initComponents();
-        cargarUsuarios();
+        cargarProductos();
     }
-    public void cargarUsuarios(){
-        System.out.println("Cargar usuarios");
+    
+    public void cargarProductos(){
+        System.out.println("Cargar productos");
         Conexion cn = new Conexion();
 
-        String query = "Select * from Usuario";
+        String query = "Select * from Productos";
         
         try{
             Statement st = null;
@@ -26,26 +32,25 @@ public class Usuarios extends javax.swing.JFrame {
                 System.out.println("Se cargaron los datos");
                 
             }
-            String[] headers = {"ID", "Name", "Lastname"};
+            String[] headers = {"ID", "Name", "Category", "Brand"};
             DefaultTableModel model = new DefaultTableModel(headers, 0);
             
             while(rs.next()) {
                 Object[] row = {
                     rs.getInt("id"),
                     rs.getString("name"),
-                    rs.getString("lastname")
+                    rs.getString("category"),
+                    rs.getString("brand")
                 } ;
                 model.addRow(row);
             }
                                              
-            tblUsuarios.setModel(model);
+            tblProductos.setModel(model);
         }catch (SQLException e){
             System.out.println(e);
         }
         
     }
-    
-    
 
    
     @SuppressWarnings("unchecked")
@@ -54,9 +59,9 @@ public class Usuarios extends javax.swing.JFrame {
 
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        tblUsuarios = new javax.swing.JTable();
+        tblProductos = new javax.swing.JTable();
         btnAgregar = new javax.swing.JButton();
-        btnEditar = new javax.swing.JButton();
+        btnModificar = new javax.swing.JButton();
         btnEliminar = new javax.swing.JButton();
         btnSalir = new javax.swing.JButton();
 
@@ -69,37 +74,33 @@ public class Usuarios extends javax.swing.JFrame {
             }
         });
 
-        jLabel1.setFont(new java.awt.Font("Vineta BT", 0, 24)); // NOI18N
-        jLabel1.setText("FORMULARIO DE USUARIOS");
+        jLabel1.setFont(new java.awt.Font("Snap ITC", 2, 24)); // NOI18N
+        jLabel1.setText("        PRODUCTOS");
 
-        tblUsuarios.setModel(new javax.swing.table.DefaultTableModel(
+        tblProductos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
             },
             new String [] {
-                "ID", "Name", "Lastname"
+                "ID", "Name", "Catrgory", "Brand"
             }
         ));
-        jScrollPane1.setViewportView(tblUsuarios);
-        if (tblUsuarios.getColumnModel().getColumnCount() > 0) {
-            tblUsuarios.getColumnModel().getColumn(1).setHeaderValue("Name");
-            tblUsuarios.getColumnModel().getColumn(2).setHeaderValue("Lastname");
-        }
+        jScrollPane1.setViewportView(tblProductos);
 
-        btnAgregar.setText("Aregar");
+        btnAgregar.setText("Agregar");
         btnAgregar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnAgregarActionPerformed(evt);
             }
         });
 
-        btnEditar.setText("Editar");
-        btnEditar.addActionListener(new java.awt.event.ActionListener() {
+        btnModificar.setText("Modifacar");
+        btnModificar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnEditarActionPerformed(evt);
+                btnModificarActionPerformed(evt);
             }
         });
 
@@ -121,86 +122,55 @@ public class Usuarios extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(191, Short.MAX_VALUE)
-                .addComponent(jLabel1)
-                .addGap(181, 181, 181))
             .addGroup(layout.createSequentialGroup()
-                .addGap(47, 47, 47)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(81, 81, 81)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(btnAgregar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnEditar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnEliminar, javax.swing.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE)
-                    .addComponent(btnSalir, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(236, 236, 236)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 362, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(39, 39, 39)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(116, 116, 116)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(btnModificar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnEliminar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnAgregar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnSalir, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                .addContainerGap(162, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(16, 16, 16)
                 .addComponent(jLabel1)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGap(36, 36, 36)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(44, 44, 44)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(90, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(53, 53, 53)
                         .addComponent(btnAgregar)
-                        .addGap(36, 36, 36)
-                        .addComponent(btnEditar)
-                        .addGap(38, 38, 38)
+                        .addGap(50, 50, 50)
+                        .addComponent(btnModificar)
+                        .addGap(58, 58, 58)
                         .addComponent(btnEliminar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnSalir)))
-                .addContainerGap(86, Short.MAX_VALUE))
+                        .addComponent(btnSalir)
+                        .addGap(115, 115, 115))))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
-        // TODO add your handling code here:
-        dispose();
-    }//GEN-LAST:event_btnSalirActionPerformed
-
-    private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
-        // TODO add your handling code here:
-        AgregarUsuario fornAdd = new AgregarUsuario();
-        fornAdd.setVisible(true);
-       
-    }//GEN-LAST:event_btnAgregarActionPerformed
-
-    private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
-        // TODO add your handling code here:
-        TableModel modelo = tblUsuarios.getModel();
-        String id = modelo.getValueAt(tblUsuarios.getSelectedRow(), 0).toString();
-        String nombre = modelo.getValueAt(tblUsuarios.getSelectedRow(), 1).toString();
-        String apellido = modelo.getValueAt(tblUsuarios.getSelectedRow(), 2).toString();
-        
-        
-        
-        EditarUsuario fornUpd = new EditarUsuario();
-        fornUpd.setVisible(true);
-        
-        
-    }//GEN-LAST:event_btnEditarActionPerformed
-
-    private void formWindowGainedFocus(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowGainedFocus
-        // TODO add your handling code here:
-        cargarUsuarios();
-    }//GEN-LAST:event_formWindowGainedFocus
-
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
         // TODO add your handling code here:
-        if (tblUsuarios.getSelectedRow() > -1) {
+        if (tblProductos.getSelectedRow() > -1) {
             int option = JOptionPane.showConfirmDialog(null, "¿Estas seguro de eliminar?", "Eliminar", JOptionPane.OK_OPTION, JOptionPane.NO_OPTION);
             if (option == 0) {
-                TableModel modelo = tblUsuarios.getModel();
+                TableModel modelo = tblProductos.getModel();
                 Conexion cn = new Conexion();
-                String id = modelo.getValueAt(tblUsuarios.getSelectedRow(), 0).toString();
-                String query = "DELETE FROM usuarios WHERE id =?";
+                String id = modelo.getValueAt(tblProductos.getSelectedRow(), 0).toString();
+                String query = "DELETE FROM productos WHERE id =?";
                 try {
                     PreparedStatement ps = cn.conectar().prepareStatement(query);
                     ps.setInt(1, Integer.parseInt(id));
@@ -215,11 +185,37 @@ public class Usuarios extends javax.swing.JFrame {
         } else {
             JOptionPane.showMessageDialog(null, "Hey selecciona el registro");
         }
-           
-        
-        
-        
     }//GEN-LAST:event_btnEliminarActionPerformed
+
+    private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
+        // TODO add your handling code here:
+        AgregarProducto fornAdd = new AgregarProducto();
+        fornAdd.setVisible(true);
+    }//GEN-LAST:event_btnAgregarActionPerformed
+
+    private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
+        // TODO add your handling code here:
+        TableModel modelo = tblProductos.getModel();
+        String id = modelo.getValueAt(tblProductos.getSelectedRow(), 0).toString();
+        String nombre = modelo.getValueAt(tblProductos.getSelectedRow(), 1).toString();
+        String categoria = modelo.getValueAt(tblProductos.getSelectedRow(), 2).toString();
+        String marca = modelo.getValueAt(tblProductos.getSelectedRow(), 3).toString();
+        
+        
+        
+        EditarProducto fornUpd = new EditarProducto();
+        fornUpd.setVisible(true);
+    }//GEN-LAST:event_btnModificarActionPerformed
+
+    private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
+        // TODO add your handling code here:
+        dispose();
+    }//GEN-LAST:event_btnSalirActionPerformed
+
+    private void formWindowGainedFocus(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowGainedFocus
+        // TODO add your handling code here:
+        cargarProductos();
+    }//GEN-LAST:event_formWindowGainedFocus
 
     /**
      * @param args the command line arguments
@@ -238,31 +234,31 @@ public class Usuarios extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Usuarios.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Productos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Usuarios.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Productos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Usuarios.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Productos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Usuarios.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Productos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Usuarios().setVisible(true);
+                new Productos().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregar;
-    private javax.swing.JButton btnEditar;
     private javax.swing.JButton btnEliminar;
+    private javax.swing.JButton btnModificar;
     private javax.swing.JButton btnSalir;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable tblUsuarios;
+    private javax.swing.JTable tblProductos;
     // End of variables declaration//GEN-END:variables
 }
