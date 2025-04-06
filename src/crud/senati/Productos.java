@@ -203,7 +203,7 @@ public class Productos extends javax.swing.JFrame {
         
         
         
-        EditarProducto fornUpd = new EditarProducto();
+        EditarProductos fornUpd = new EditarProductos();
         fornUpd.setVisible(true);
     }//GEN-LAST:event_btnModificarActionPerformed
 
